@@ -1,63 +1,65 @@
 #include <stdio.h>
 
-int main()
-{  int a[]={34,55,7,12,55};
-mergesort(A,lb,ub){
-    if(lb<ub)
-    {
-        mid=(lb+ub)/2;
-        mergesort(A,lb,mid),
-        mergesort(A,mid+1,ub);
-        merge(A,lb,mid,ub);
+void merge(int a[], int lb, int mid, int ub);
+
+void mergeSort(int a[], int lb, int ub) {
+    if (lb < ub) {
+        int mid = (lb + ub) / 2;
+        mergeSort(a, lb, mid);
+        mergeSort(a, mid + 1, ub);
+        merge(a, lb, mid, ub);
     }
 }
 
-   for(k=lb;k<=ub;k++)
-   {
-       a[k]=b[k];
-   }
-
-    return 0;
-}
-
-merge(A,lb,mid,ub)
-{
-    i=lb;
-    j=mid+1;
-    k=lb;
+void merge(int a[], int lb, int mid, int ub) {
+    int n1 = mid - lb + 1;
+    int n2 = ub - mid;
+    int left[n1], right[n2];
     
-    while(i<=mid && j<=ub)
-    {
-        if(a[i]<=a[j])
-        {
-            b[k]=a[i];
+    for (int i = 0; i < n1; i++)
+        left[i] = a[lb + i];
+    for (int j = 0; j < n2; j++)
+        right[j] = a[mid + 1 + j];
+    
+    int i = 0, j = 0, k = lb;
+    
+    while (i < n1 && j < n2) {
+        if (left[i] <= right[j]) {
+            a[k] = left[i];
             i++;
-        }
-        else
-        {
-            b[k]=a[j];
-            j++
-        }k++;
-        
-    }
-    if(i>mid)
-    {
-        while(j<=ub)
-        {
-            b[k]=a[j];
+        } else {
+            a[k] = right[j];
             j++;
-            k++;
-        
         }
-        else
-        {
-            while(i<=mid)
-            {
-                b[k]=a[i];
-                i++;
-                k++;
-                
-            }
-        }
+        k++;
     }
+    
+    while (i < n1) {
+        a[k] = left[i];
+        i++;
+        k++;
+    }
+    
+    while (j < n2) {
+        a[k] = right[j];
+        j++;
+        k++;
+    }
+}
+
+int main() {
+    int a[] = {34, 55, 7, 12, 55};
+    int n = sizeof(a) / sizeof(a[0]);
+    
+    printf("Original array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    
+    mergeSort(a, 0, n - 1);
+    
+    printf("\nSorted array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    
+    return 0;
 }
